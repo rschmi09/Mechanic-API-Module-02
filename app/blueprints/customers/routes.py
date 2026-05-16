@@ -1,13 +1,46 @@
-from .schemas import customer_schema, customers_schema
+from .schemas import customer_schema, customers_schema, login_schema
+from app.blueprints.service_ticket.schemas import service_tickets_schema 
 from flask import request, jsonify
 from marshmallow import ValidationError
 from sqlalchemy import select
-from app.models import Customer, db
+from app.models import Customer, db, Service_Ticket
 from . import customers_bp
+from app.extensions import limiter, cache
+from app.utils.util import encode_token, token_required
+
+
+@customers_bp.route('/login', methods=['POST'])
+def login():
+    try:
+        credentials = login_schema.load(request.json)
+        email = credentials['email']
+        password = credentials['password']
+    except ValidationError as e:
+        return jsonify(e.messages), 400
+    
+    query = select(Customer).where(Customer.email == email)
+    customer = db.session.execute(query).scalars().first()
+
+    if customer and customer.password == password:
+        token = encode_token(customer.id)
+
+        response = {
+            'status': 'success',
+            'message': 'successfully logged in',
+            'token': token
+        }
+
+        return jsonify(response), 200
+    
+    else:
+        return jsonify({'message': 'Invalid email or password'}), 400
 
 
 # Create customer (POST) - C in CRUD
 @customers_bp.route('/', methods=['POST'])
+# limit request to 5 customers per day (per ip address)
+# do not want too many customers to overwhelm sysyem
+@limiter.limit("5 per day")
 def create_customer():
     try:
         customer_data = customer_schema.load(request.json)
@@ -28,6 +61,8 @@ def create_customer():
 
 # Get all Customers (GET) - R in CRUD
 @customers_bp.route('/', methods=['GET'])
+# Caching all members wil help speed up searches
+@cache.cached(timeout=60)  # 60 seconds
 def get_customers():
     query = select(Customer)
     customers = db.session.execute(query).scalars().all()
@@ -42,11 +77,31 @@ def get_customer(customer_id):
 
     if customer:
         return customer_schema.jsonify(customer), 200
+    
     return jsonify({'error': 'Customer not found.'}), 404
 
 
+# Get Service_Ticket related to a specific customer - R in CRUD
+@customers_bp.route('/my-tickets', methods=['GET'])
+@token_required
+# limit request to 5 times per day
+# limit edit requests to preserve integrity of customer data
+@limiter.limit("5 per day")
+def get_customer_ticket(customer_id):
+
+    query = select(Service_Ticket).where(Service_Ticket.customer_id == customer_id)
+    customer_tickets = db.session.execute(query).scalars().all()
+
+
+    return service_tickets_schema.jsonify(customer_tickets), 200
+        
+
 # Update Specific Customer (PUT) - U in CRUD
-@customers_bp.route('/<int:customer_id>', methods=['PUT'])
+@customers_bp.route('/', methods=['PUT'])
+@token_required
+# limit request to 5 times per day
+# limit edit requests to preserve integrity of customer data
+@limiter.limit("5 per day")
 def update_customer(customer_id):
     customer = db.session.get(Customer, customer_id)
 
@@ -66,7 +121,11 @@ def update_customer(customer_id):
 
 
 # Delete Specific Customer (DELETE) - D in CRUD
-@customers_bp.route('/<int:customer_id>', methods=['DELETE'])
+@customers_bp.route('/', methods=['DELETE'])
+@token_required
+# limit request to 5 times per day
+# want to limit customer account deletion to preserve customer data for company / legal reasons
+@limiter.limit("5 per day")
 def delete_customer(customer_id):
     customer = db.session.get(Customer, customer_id)
 
