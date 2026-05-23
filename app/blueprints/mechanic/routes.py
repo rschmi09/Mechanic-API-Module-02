@@ -29,10 +29,21 @@ def create_mechanic():
 # Get all mechanics (GET) - R in CRUD
 @mechanics_bp.route('/', methods=['GET'])
 def get_mechanics():
-    query = select(Mechanic)
-    mechanics = db.session.execute(query).scalars().all()
 
-    return mechanics_schema.jsonify(mechanics)
+    try:
+        page = int(request.args.get('page'))
+        per_page = int(request.args.get('per_page'))
+
+        query = select(Mechanic)
+        mechanics = db.paginate(query, page=page, per_page=per_page)
+
+        return mechanics_schema.jsonify(mechanics),200
+
+    except:
+        query = select(Mechanic)
+        mechanics = db.session.execute(query).scalars().all()
+
+        return mechanics_schema.jsonify(mechanics)
 
 
 # Get Specific mechanic (GET) - R in CRUD
@@ -43,6 +54,18 @@ def get_mechanic(mechanic_id):
     if mechanic:
         return mechanic_schema.jsonify(mechanic), 200
     return jsonify({'error': 'Mechanic not found.'}), 404
+
+
+# Get list of mechanics in order of who has worked on the most service_tickets
+@mechanics_bp.route('/workload', methods=['GET'])
+def mechanic_workload():
+    query = select(Mechanic)
+    mechanics = db.session.execute(query).scalars().all()
+
+    mechanics.sort(key= lambda mechanic: len(mechanic.service_tickets), reverse=True)
+
+    return mechanics_schema.jsonify(mechanics)
+
 
 
 # Update Specific mechanic (PUT) - U in CRUD

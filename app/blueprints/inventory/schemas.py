@@ -1,5 +1,5 @@
 from app.extensions import ma
-from app.models import Mechanic, Service_Ticket
+from app.models import Inventory, Service_Ticket
 from marshmallow import fields
 
 
@@ -9,15 +9,15 @@ class Service_TicketMiniSchema(ma.SQLAlchemyAutoSchema):
         include_fk = True
 
 
-class MechanicSchema(ma.SQLAlchemyAutoSchema):
+class InventorySchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Mechanic
+        model = Inventory
         include_fk = True
 
     service_tickets = fields.Nested(
         Service_TicketMiniSchema(only=('id', 'service_date', 'service_desc')),
         many=True
-    )
+    )   
 
-mechanic_schema = MechanicSchema()
-mechanics_schema = MechanicSchema(many=True)
+inventory_schema = InventorySchema()
+inventories_schema = InventorySchema(many=True)

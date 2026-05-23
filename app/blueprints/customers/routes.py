@@ -62,12 +62,23 @@ def create_customer():
 # Get all Customers (GET) - R in CRUD
 @customers_bp.route('/', methods=['GET'])
 # Caching all members wil help speed up searches
-@cache.cached(timeout=60)  # 60 seconds
+#@cache.cached(timeout=60)  # 60 seconds
 def get_customers():
-    query = select(Customer)
-    customers = db.session.execute(query).scalars().all()
 
-    return customers_schema.jsonify(customers)
+    try:
+        page = int(request.args.get('page'))
+        per_page = int(request.args.get('per_page'))
+
+        query = select(Customer)
+        customers = db.paginate(query, page=page, per_page=per_page)
+
+        return customers_schema.jsonify(customers), 200
+    
+    except:
+        query = select(Customer)
+        customers = db.session.execute(query).scalars().all()
+
+        return customers_schema.jsonify(customers)
 
 
 # Get Specific Customer (GET) - R in CRUD

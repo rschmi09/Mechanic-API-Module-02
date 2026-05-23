@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "a0a41b9e-ab80-420c-9446-4d700dd3618f",
-    "name": "Mechanic_API",
+    "_postman_id": "6deca782-6d6a-45fb-b17c-c0b6c8fb2f7f",
+    "name": "Mechanic_API Copy",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "51611297",
-    "_collection_link": "https://go.postman.co/collection/51611297-a0a41b9e-ab80-420c-9446-4d700dd3618f?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/51611297-6deca782-6d6a-45fb-b17c-c0b6c8fb2f7f?source=collection_link"
   },
   "item": [
     {
@@ -17,7 +17,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Jack Doe\",\r\n    \"email\": \"jackdoe@email.com\",\r\n    \"phone\": \"123-456-7890\"\r\n}",
+              "raw": "{\r\n    \"name\": \"Jack Doe\",\r\n    \"email\": \"jackdoe@email.com\",\r\n    \"phone\": \"123-456-7890\",\r\n    \"password\": \"123abc\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -148,6 +148,122 @@
               "path": [
                 "customers",
                 "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Customer Login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"jackdoe@email.com\",\r\n    \"password\": \"123abc\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/customers/login",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "customers",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Customer with Token",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Nzg5NjA2NzQsImlhdCI6MTc3ODk1NzA3NCwic3ViIjozfQ.3k1ZhglPf9VxRwQchSVv9ysVP1mjlRrR1XVmpH65Rk4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"jackdoe@email.com\",\r\n    \"password\": \"123abc\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/customers",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer Service Ticket(s)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Nzg5NjU4MzcsImlhdCI6MTc3ODk2MjIzNywic3ViIjoiMSJ9.pm25RokmUYw9MYC1nJBGqngdqrATK2X8IjlBDMQD0Kc",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/customers/my-tickets",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "customers",
+                "my-tickets"
               ]
             }
           },
@@ -300,6 +416,32 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Get Mechanics in Order of Most Service Tickets Worked Copy",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/mechanics/workload",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "mechanics",
+                "workload"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -316,7 +458,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"vin\": \"12345678912345678\",\r\n    \"service_date\": \"2026-02-01\",\r\n    \"service_desc\": \"standard oil change with air filter change and tire rotation.\",\r\n    \"customer_id\": 2\r\n}",
+              "raw": "{\r\n    \"vin\": \"12345678912345678\",\r\n    \"service_date\": \"2026-04-16\",\r\n    \"service_desc\": \"customer states: rattle sounds coming from rear of vehicle.\",\r\n    \"customer_id\": 1\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -427,7 +569,7 @@
           "response": []
         },
         {
-          "name": "Assign Mechanic",
+          "name": "Assign/Remove Mechanic",
           "request": {
             "auth": {
               "type": "noauth"
@@ -436,7 +578,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "",
+              "raw": "{\r\n    \"add_mechanic_ids\": [3],\r\n    \"remove_mechanic_ids\": [2]\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -444,7 +586,7 @@
               }
             },
             "url": {
-              "raw": "http://127.0.0.1:5000/service_tickets/4/assign-mechanic/3",
+              "raw": "http://127.0.0.1:5000/service_tickets/5/edit",
               "protocol": "http",
               "host": [
                 "127",
@@ -455,46 +597,8 @@
               "port": "5000",
               "path": [
                 "service_tickets",
-                "4",
-                "assign-mechanic",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Remove Mechanic",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://127.0.0.1:5000/service_tickets/4/remove-mechanic/1",
-              "protocol": "http",
-              "host": [
-                "127",
-                "0",
-                "0",
-                "1"
-              ],
-              "port": "5000",
-              "path": [
-                "service_tickets",
-                "4",
-                "remove-mechanic",
-                "1"
+                "5",
+                "edit"
               ]
             }
           },
@@ -521,6 +625,145 @@
               "path": [
                 "service_tickets",
                 "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        {
+          "name": "Create Inventory Item",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Air Filter\", \r\n    \"price\": \"12.5\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/inventories",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "inventories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Inventory Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/inventories",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "inventories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Inventory Item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/inventories/3",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "inventories",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Inventory Item",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Air Filter\", \r\n    \"price\": \"14\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/inventories/3",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "inventories",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/inventories/3",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "inventories",
+                "3"
               ]
             }
           },
