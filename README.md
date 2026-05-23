@@ -3,9 +3,17 @@ README.md
 -------------------------------------
 Project Overview
 -------------------------------------
-Backend Specialization 01 Assignment01
+Backend Specialization 01 MODULE PROJECT
+CURRENT PROJECT GOAL:
+Apply advanced techniques learned through Lessons 6-9 to Mechanic API:
+- Rate Limiting
+- Token Authentification
+- Advanced Queries
 
-PROJECT GOAL:
+Implement a new Blueprint for the Mechanic Shop Inventory
+
+
+ORIGINAL PROJECT GOAL:
 
 Expand upon implemented customer blueprint with Marshmallow schemas and completed all CRUD routes in and Application Factory Pattern by adding blueprints and routes for the remaining models: 'mechanic' and 'service_ticket'.
 
@@ -18,21 +26,29 @@ Project Installations
 (also in requirements.txt)
 
 blinker==1.9.0
+cachelib==0.14.0
 click==8.3.3
 colorama==0.4.6
+Deprecated==1.3.1
 Flask==3.1.3
+Flask-Caching==2.4.0
+Flask-Limiter==4.1.1
 flask-marshmallow==1.5.0
 Flask-SQLAlchemy==3.1.1
 greenlet==3.5.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
+limits==5.8.0
 MarkupSafe==3.0.3
 marshmallow==4.3.0
 marshmallow-sqlalchemy==1.5.0
 mysql-connector-python==9.7.0
+ordered-set==4.1.0
+packaging==26.2
 SQLAlchemy==2.0.49
 typing_extensions==4.15.0
 Werkzeug==3.1.8
+wrapt==2.1.2
 
 
 -------------------------------------
@@ -44,6 +60,10 @@ Mechanic_API
 |_app
 |    |_blueprints
 |    |    |_customers
+|    |    |   |___init__.py
+|    |    |   |_routes.py
+|    |    |   |_schemas.py
+|    |    |_inventory
 |    |    |   |___init__.py
 |    |    |   |_routes.py
 |    |    |   |_schemas.py
