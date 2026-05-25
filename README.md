@@ -23,18 +23,21 @@ Test each route as it is created in Postman inside a collection. Once project is
 -------------------------------------
 Project Installations
 -------------------------------------
-(also in requirements.txt)
+(also in requirements_swagger.txt)
 
 blinker==1.9.0
 cachelib==0.14.0
 click==8.3.3
 colorama==0.4.6
 Deprecated==1.3.1
+ecdsa==0.19.2
 Flask==3.1.3
 Flask-Caching==2.4.0
 Flask-Limiter==4.1.1
 flask-marshmallow==1.5.0
 Flask-SQLAlchemy==3.1.1
+flask-swagger==0.2.14
+flask-swagger-ui==5.32.6
 greenlet==3.5.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
@@ -45,6 +48,11 @@ marshmallow-sqlalchemy==1.5.0
 mysql-connector-python==9.7.0
 ordered-set==4.1.0
 packaging==26.2
+pyasn1==0.6.3
+python-jose==3.5.0
+PyYAML==6.0.3
+rsa==4.9.1
+six==1.17.0
 SQLAlchemy==2.0.49
 typing_extensions==4.15.0
 Werkzeug==3.1.8
@@ -75,6 +83,11 @@ Mechanic_API
 |    |        |___init__.py
 |    |        |_routes.py
 |    |        |_schemas.py     
+|    |
+|    |_utils
+|    |
+|    |_static
+|    |    |_swagger.yaml
 |    |
 |    |_ __init__.py
 |    |_ extensions.py
